@@ -1,29 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Lumovex</title>
-</head>
-<body>
-  <h1>Welcome to Lumovex!</h1>
-  <div>
-    Number of employees: {{ num_workers }}
-  </div>
-  <div>
-    <p>
-      At Lumovex, we offer innovative solutions and cutting-edge technologies for your business. Our team of experts in software development, artificial intelligence, and cybersecurity is ready to tackle the most challenging tasks and bring your ideas to life.
+{% extends "base.html" %}
 
-      We strive to provide you with the highest quality products and services. Our technological solutions meet modern standards and help you grow and implement innovation in your industry.
+{% block content %}
 
-      Regardless of the size of your company or project, we work with great attention to detail and take into account all your needs. Our goal is to create a product that satisfies you and exceeds your expectations.
+    <h1>Welcome to Lumovex!</h1>
+    <h2>
+      Number of employees: {{ num_workers }}
+    </h2>
+  <br>
+    <div>
+      <p>
+        At Lumovex, we offer innovative solutions and cutting-edge technologies for your business. Our team of experts in software development, artificial intelligence, and cybersecurity is ready to tackle the most challenging tasks and bring your ideas to life.
 
-      We invite you to join Lumovex and embark on an exciting journey into the world of modern technologies. Together, we can achieve the best results and build a future where technology becomes a true driving force for success.
+        We strive to provide you with the highest quality products and services. Our technological solutions meet modern standards and help you grow and implement innovation in your industry.
 
-      Thank you for choosing Lumovex!
+        Regardless of the size of your company or project, we work with great attention to detail and take into account all your needs. Our goal is to create a product that satisfies you and exceeds your expectations.
 
-      Sincerely,
-      The Lumovex Team
-    </p>
-  </div>
-</body>
-</html>
+        We invite you to join Lumovex and embark on an exciting journey into the world of modern technologies. Together, we can achieve the best results and build a future where technology becomes a true driving force for success.
+
+        Thank you for choosing Lumovex!
+
+        Sincerely,
+        The Lumovex Team
+      </p>
+    </div>
+
+{% endblock %}
