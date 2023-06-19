@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
 from it_company_task_manager import settings
 
 
@@ -22,7 +21,7 @@ class Worker(AbstractUser):
     position = models.ForeignKey(
         Position,
         on_delete=models.CASCADE,
-
+        null=True,
     )
 
     class Meta:
@@ -30,8 +29,7 @@ class Worker(AbstractUser):
         verbose_name_plural = "workers"
 
     def __str__(self):
-        return f"{self.last_name} {self.first_name}" \
-               f"({self.position})"
+        return f"{self.last_name} {self.first_name}"
 
 
 class Task(models.Model):
