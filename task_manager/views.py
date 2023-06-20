@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views import generic
 from django.urls import reverse_lazy
 
-from task_manager.forms import WorkerUpdateForm, WorkerCreateForm, TaskForm
+from task_manager.forms import WorkerUpdateForm, WorkerCreateForm, TaskForm, TaskSearchForm
 from task_manager.models import (
     Worker,
     Task,
@@ -48,7 +48,36 @@ class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
-    queryset = Task.objects.select_related("task_type")
+    paginate_by = 10
+
+    def get_context_data(self, *, object_list=None, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["task_types"] = TaskType.objects.all()
+        context["search_form"] = TaskSearchForm(initial={
+            "name": name
+        })
+
+        return context
+
+    def get_queryset(self):
+        queryset = Task.objects.select_related("task_type")
+        priority = self.request.GET.get("priority")
+        task_type = self.request.GET.get("task_type")
+        is_completed = self.request.GET.get("is_completed")
+        form = TaskSearchForm(self.request.GET)
+
+        if priority:
+            queryset = queryset.filter(priority=priority)
+        if task_type:
+            queryset = queryset.filter(task_type=task_type)
+        if is_completed:
+            is_completed = True if is_completed == "true" else False
+            queryset = queryset.filter(is_completed=is_completed)
+        if form.is_valid():
+            queryset = queryset.filter(name__icontains=form.cleaned_data["name"])
+
+        return queryset
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
   <h1>
@@ -7,6 +8,48 @@
       +
     </a>
   </h1>
+  <div>
+    <form method="GET">
+      <h4>Filter</h4>
+      <div class="d-flex">
+        <div class="form-group">
+          <label for="priority">Priority:</label>
+          <select name="priority" id="priority" class="form-control">
+              <option value="">All</option>
+              <option value="Low">Low</option>
+              <option value="Urgent">Urgent</option>
+              <option value="High">High</option>
+              <option value="Normal">Normal</option>
+          </select>
+      </div>
+      <div class="form-group">
+          <label for="task_type">Type</label>
+          <select name="task_type" id="task_type" class="form-control">
+              <option value="">All</option>
+              {% for task_type in task_types %}
+                  <option value="{{ task_type.pk }}">{{ task_type.name }}</option>
+              {% endfor %}
+          </select>
+      </div>
+      <div class="form-group">
+            <label for="is_completed">Is Completed</label>
+            <select name="is_completed" id="is_completed" class="form-control">
+                <option value="">All</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Apply Filter</button>
+    </form>
+  </div>
+  <br>
+  <form action="" method="get" class="form-inline">
+    {{ search_form|crispy }}
+    <input class="btn btn-secondary" type="submit" value="🔎">
+  </form>
+
   {% if task_list %}
     <table class="table">
       <tr>
@@ -34,6 +77,10 @@
       </tr>
     {% endfor %}
     </table>
+    {% block pagination %}
+      {% include "includes/pagination.html" %}
+    {% endblock %}
+
   {% else %}
     <p> The are no task in company </p>
   {% endif %}

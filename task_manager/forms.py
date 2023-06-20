@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.forms import PasswordInput, DateInput
 from django.contrib.auth.forms import UserCreationForm
 
-from task_manager.models import Worker, Task
+from task_manager.models import Worker, Task, TaskType
 
 
 class WorkerCreateForm(forms.ModelForm):
@@ -47,3 +47,12 @@ class TaskForm(forms.ModelForm):
             "task_type",
             "assignees"
         ]
+
+
+class TaskSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search"}),
+    )
