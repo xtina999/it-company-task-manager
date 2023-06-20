@@ -27,6 +27,11 @@ class TaskListView(generic.ListView):
     model = Task
 
 
+class TaskDetailView(generic.DetailView):
+    model = Task
+    queryset = Task.objects.prefetch_related("assignees")
+
+
 class PositionListView(generic.ListView):
     model = Position
 
