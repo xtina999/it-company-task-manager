@@ -1,13 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Position List</h1>
+  <h1>
+    Position List
+    <a href="{% url 'task_manager:positions-create' %}">
+      +
+    </a>
+  </h1>
   {% if position_list %}
-    <ul>
-    {% for position in position_list %}
-      <li>{{ position.name }}</li>
+     <table class="table">
+      <tr>
+        <th>Name</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+      {% for position in position_list %}
+        <tr>
+          <td>
+            {{ position.name }}
+          </td>
+          <td>
+            <a href="{% url "task_manager:positions-update" pk=position.id %}">UPDATE</a>
+          </td>
+          <td>
+            <a href="{% url "task_manager:positions-delete" pk=position.id %}">DELETE</a>
+          </td>
+        </tr>
     {% endfor %}
-    </ul>
+    </table>
   {% else %}
     <p>The are no position in company</p>
   {% endif %}

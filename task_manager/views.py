@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import generic
+from django.urls import reverse_lazy
 
 from task_manager.models import (
     Worker,
@@ -36,6 +37,26 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
 
 class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
+
+
+class PositionCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:position-list")
+    template_name = "task_manager/position_form.html"
+
+
+class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:position-list")
+    template_name = "task_manager/position_form.html"
+
+
+class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Position
+    template_name = "task_manager/position_confirm_delete.html"
+    success_url = reverse_lazy("task_manager:position-list")
 
 
 class TaskTypeListView(LoginRequiredMixin, generic.ListView):
