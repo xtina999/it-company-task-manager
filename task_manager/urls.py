@@ -3,6 +3,9 @@ from django.urls import path
 from task_manager.views import (
     index,
     WorkerListView,
+    WorkerCreateView,
+    WorkerUpdateView,
+    WorkerDeleteView,
     PositionListView,
     PositionCreateView,
     PositionUpdateView,
@@ -20,6 +23,21 @@ urlpatterns = [
         "workers/",
         WorkerListView.as_view(),
         name="worker-list"
+    ),
+    path(
+        "workers/create/",
+        WorkerCreateView.as_view(),
+        name="worker-create"
+    ),
+    path(
+        "workers/<int:pk>/update",
+        WorkerUpdateView.as_view(),
+        name="worker-update"
+    ),
+    path(
+        "workers/<int:pk>/delete",
+        WorkerDeleteView.as_view(),
+        name="worker-delete"
     ),
     path(
         "positions/",

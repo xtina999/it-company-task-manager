@@ -1,21 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Position List</h1>
+  <h1>
+    Worker List
+    <a href="{% url 'task_manager:worker-create' %}">
+      +
+    </a>
+  </h1>
   {% if worker_list %}
     <table class="table">
       <tr>
         <th>Position</th>
         <th>Username</th>
-        <th>First name</th>
-        <th>Last name</th>
+        <th>Name</th>
+        <th>UPDATE</th>
+        <th>DELETE</th>
       </tr>
     {% for worker in worker_list %}
       <tr>
         <td>{{ worker.position }}</td>
         <td><a href="#">{{ worker.username }}</a></td>
-        <td>{{ worker.first_name }}</td>
-        <td>{{ worker.last_name }}</td>
+        <td>{{ worker.last_name }} {{ worker.first_name }}</td>
+        <td>
+          <a href="{% url "task_manager:worker-update" pk=worker.id %}">UPDATE</a>
+        </td>
+        <td>
+          <a href="{% url "task_manager:worker-delete" pk=worker.id %}">DELETE</a>
+        </td>
       </tr>
     {% endfor %}
     </table>
