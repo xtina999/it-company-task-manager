@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Delete Task type</h1>
+
+<p>Are you sure you want to delete the task type {{ position }}?</p>
+<p><i>All Task with this type will be also deleted!</i></p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete" class="btn btn-danger">
+
+</form>
+
+{% endblock %}
