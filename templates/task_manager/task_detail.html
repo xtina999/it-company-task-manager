@@ -9,6 +9,12 @@
         <span>
           priority: {{ task.priority }}
         </span>
+        <span>
+          <a href="{% url "task_manager:task-update" pk=task.id %}">UPDATE</a>
+        </span>
+        <span>
+          <a href="{% url "task_manager:task-delete" pk=task.id %}">DELETE</a>
+        </span>
       </p>
       <p>
           created at: {{ task.created_at }}
