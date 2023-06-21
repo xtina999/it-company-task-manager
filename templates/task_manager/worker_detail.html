@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>
+    My profile ({{ worker.username }})
+    <span>
+          <a href="{% url "task_manager:worker-accounts-update" pk=worker.id %}">UPDATE</a>
+    </span>
+  </h1>
+  <p>{{ worker.last_name }} {{ worker.first_name }}
+    - {{ worker.position }}</p>
+  <p>Now: {% now "Y-m-d H:i:s" %}</p>
+  <div>
+    <h2>Tasks:</h2>
+    {% if worker.assignees %}
+      <table class="table">
+        <tr>
+          <th>Task Type</th>
+          <th>Task</th>
+          <th>Deadline</th>
+          <th>Is completed</th>
+          <th>Priority</th>
+          <th>UPDATE</th>
+          <th>DELETE</th>
+        </tr>
+        {% for task in worker.assignees.all %}
+          <tr>
+            <td>{{ task.task_type }}</td>
+            <td><a href="{% url 'task_manager:task-detail' pk=task.id %}">{{ task.name }}</a></td>
+            <td>{{ task.deadline }}</td>
+            <td>{{ task.is_completed }}</td>
+            <td>{{ task.priority }}</td>
+            <td>
+              <a href="{% url 'task_manager:task-update' pk=task.id %}">UPDATE</a>
+            </td>
+            <td>
+              <a href="{% url 'task_manager:task-delete' pk=task.id %}">DELETE</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p> No task </p>
+    {% endif %}
+  </div>
+
+{% endblock %}
