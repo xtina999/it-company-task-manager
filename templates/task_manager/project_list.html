@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    Project List
+    {% if request.user.position.name == "Project Manager" %}
+      <a href="{% url 'task_manager:project-create' %}">
+        +
+      </a>
+    {% endif %}
+  </h1>
+  <div>
+    <form method="GET">
+      <h4>Filter</h4>
+      <div class="d-flex">
+        <div class="form-group">
+              <label for="is_completed">Is Completed</label>
+              <select name="is_completed" id="is_completed" class="form-control">
+                  <option value="">All</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+              </select>
+          </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Apply Filter</button>
+    </form>
+  </div>
+  <br>
+  <form action="" method="get" class="form-inline">
+    {{ search_form|crispy }}
+    <input class="btn btn-secondary" type="submit" value="🔎">
+  </form>
+
+  {% if project_list %}
+    <table class="table">
+      <tr>
+        <th>Project</th>
+        <th>Deadline</th>
+        <th>Is completed</th>
+        <th>UPDATE</th>
+        <th>DELETE</th>
+      </tr>
+    {% for project in project_list %}
+      <tr>
+        <td>
+          <a
+            href="{% url 'task_manager:project-detail' project_id=project.id %}">
+            {{ project.name }}
+          </a>
+        </td>
+        <td>{{ project.deadline }}</td>
+        <td>{{ project.is_completed }}</td>
+        <td>
+            <a
+              href="{% url 'task_manager:project-update' project_id=project.id %}">
+              UPDATE
+            </a>
+        </td>
+        <td>
+            <a
+              href="{% url 'task_manager:project-delete' project_id=project.id %}">
+              DELETE
+            </a>
+        </td>
+      </tr>
+    {% endfor %}
+    </table>
+    {% block pagination %}
+      {% include "includes/pagination.html" %}
+    {% endblock %}
+
+  {% else %}
+    <p> The are no task in company </p>
+  {% endif %}
+
+{% endblock %}

@@ -1,5 +1,4 @@
 from django.urls import path
-
 from task_manager.views import (
     index,
     WorkerListView,
@@ -16,11 +15,15 @@ from task_manager.views import (
     TaskTypeCreateView,
     TaskTypeUpdateView,
     TaskTypeDeleteView,
-    TaskListView,
     TaskDetailView,
     TaskCreateView,
     TaskUpdateView,
     TaskDeleteView,
+    ProjectListView,
+    ProjectDetailView,
+    ProjectCreateView,
+    ProjectUpdateView,
+    ProjectDeleteView,
 
 )
 
@@ -97,29 +100,54 @@ urlpatterns = [
         name="task-types-delete"
     ),
     path(
-        "tasks/",
-        TaskListView.as_view(),
+        "projects/<int:project_id>/tasks/",
+        ProjectDetailView.as_view(),
         name="task-list"
     ),
     path(
-        "tasks/<int:pk>/",
+        "projects/<int:project_id>/tasks/<int:pk>/",
         TaskDetailView.as_view(),
         name="task-detail"
     ),
     path(
-        "tasks/create/",
+        "projects/<int:project_id>/tasks/create/",
         TaskCreateView.as_view(),
         name="task-create"
     ),
     path(
-        "tasks/<int:pk>/update",
+        "projects/<int:project_id>/tasks/<int:pk>/update/",
         TaskUpdateView.as_view(),
-        name="task-update"
-    ),
+        name="task-update"),
+
     path(
-        "tasks/<int:pk>/delete",
+        "projects/<int:project_id>/tasks/<int:pk>/delete",
         TaskDeleteView.as_view(),
         name="task-delete"
+    ),
+    path(
+        "projects/",
+        ProjectListView.as_view(),
+        name="project-list"
+    ),
+    path(
+        "projects/<int:project_id>/",
+        ProjectDetailView.as_view(),
+        name="project-detail"
+    ),
+    path(
+        "projects/create/",
+        ProjectCreateView.as_view(),
+        name="project-create"
+    ),
+    path(
+        "projects/<int:project_id>/update",
+        ProjectUpdateView.as_view(),
+        name="project-update"
+    ),
+    path(
+        "projects/<int:project_id>/delete",
+        ProjectDeleteView.as_view(),
+        name="project-delete"
     ),
 ]
 

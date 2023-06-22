@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <div>
+    <div>
+        <p>
+          is completed: {{ project.is_completed }}
+        </p>
+    </div>
+    <br>
+    <h1>
+      Project: {{ project.name }}
+    </h1>
+    <p>
+      <a href="{% url 'task_manager:project-update' project_id=project.id %}">
+        UPDATE
+      </a>
+      <a href="{% url 'task_manager:project-delete' project_id=project.id %}">
+        DELETE PROJECT
+      </a>
+    </p>
+
+    <p>Deadline: {{ project.deadline }}</p>
+  <br>
+    {% if project.assignees %}
+      <div>
+        <p>
+          team: {{ project.assignees.count }} assignee{{ project.assignees.count|pluralize }}
+        </p>
+        {% for worker in project.assignees.all %}
+          <p>
+            {{ worker.position }} - {{ worker.last_name }} {{ worker.first_name }}
+          </p>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No team</p>
+    {% endif %}
+  </div>
+  <br>
+  <div>
+    <p>Project:
+      <a href="{% url 'task_manager:task-create' project_id=project.pk %}">Add task+</a>
+    </p>
+    <p> {{ project.description }} </p>
+  </div>
+  <div>
+  <div>
+  <form action="{% url 'task_manager:project-detail' project_id=project.id %}" method="get">      <h4>Filter</h4>
+      <div class="d-flex">
+        <div class="form-group">
+          <label for="priority">Priority:</label>
+          <select name="priority" id="priority" class="form-control">
+            <option value="" {% if not request.GET.priority %}selected{% endif %}>All</option>
+            <option value="Low" {% if request.GET.priority == "Low" %}selected{% endif %}>Low</option>
+            <option value="Urgent" {% if request.GET.priority == "Urgent" %}selected{% endif %}>Urgent</option>
+            <option value="High" {% if request.GET.priority == "High" %}selected{% endif %}>High</option>
+            <option value="Normal" {% if request.GET.priority == "Normal" %}selected{% endif %}>Normal</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+            <label for="task_type">Type</label>
+            <select name="task_type_id" id="task_type" class="form-control">
+                <option value="" {% if not request.GET.task_type_id %}selected{% endif %}>All</option>
+                {% for task_type in task_types %}
+                    <option value="{{ task_type.pk }}" {% if request.GET.task_type_id|stringformat:"s" == task_type.pk|stringformat:"s" %}selected{% endif %}>{{ task_type.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+          <label for="is_completed">Is Completed</label>
+          <select name="is_completed" id="is_completed" class="form-control">
+              <option value="" {% if not request.GET.is_completed %}selected{% endif %}>All</option>
+              <option value="true" {% if request.GET.is_completed == "true" %}selected{% endif %}>Yes</option>
+              <option value="false" {% if request.GET.is_completed == "false" %}selected{% endif %}>No</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Apply Filter</button>
+    </form>
+    <br>
+    <form action="{% url 'task_manager:project-detail' project_id=project.id %}" method="get" class="form-inline">
+      {{ search_form|crispy }}
+      <input class="btn btn-secondary" type="submit" value="🔎">
+    </form>
+
+    {% if filtered_tasks %}
+      <table class="table">
+        <tr>
+          <th>Task Type</th>
+          <th>Task</th>
+          <th>Deadline</th>
+          <th>Is completed</th>
+          <th>Priority</th>
+          <th>UPDATE</th>
+          <th>DELETE</th>
+        </tr>
+        {% for task in filtered_tasks %}
+          <tr>
+            <td>{{ task.task_type }}</td>
+            <td><a href="{% url 'task_manager:task-detail' project_id=project.id pk=task.id %}">{{ task.name }}</a></td>
+            <td>{{ task.deadline }}</td>
+            <td>{{ task.is_completed }}</td>
+            <td>{{ task.priority }}</td>
+            <td>
+                <a href="{% url 'task_manager:task-update' project_id=project.id pk=task.id %}">UPDATE</a>
+            </td>
+            <td>
+              <a href="{% url 'task_manager:task-delete' project_id=project.id pk=task.id %}">DELETE</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+      {% block pagination %}
+        {% include "includes/pagination.html" %}
+      {% endblock %}
+
+    {% else%}
+      <p>No tasks</p>
+    {% endif %}
+  </div>
+
+{% endblock %}

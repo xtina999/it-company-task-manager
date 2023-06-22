@@ -1,10 +1,9 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
 from django.forms import PasswordInput, DateInput
 from django.contrib.auth.forms import UserCreationForm
 
-from task_manager.models import Worker, Task
+from task_manager.models import Worker, Task, Project
 
 
 class WorkerCreateForm(forms.ModelForm):
@@ -62,5 +61,35 @@ class TaskSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search by task name"}),
+    )
+
+
+class ProjectSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
         widget=forms.TextInput(attrs={"placeholder": "Search"}),
     )
+
+
+class ProjectForm(forms.ModelForm):
+
+    deadline = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
+
+    assignees = forms.ModelMultipleChoiceField(
+        queryset=get_user_model().objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+
+    class Meta:
+        model = Project
+        fields = [
+            "name",
+            "description",
+            "deadline",
+            "is_completed",
+            "assignees"
+        ]

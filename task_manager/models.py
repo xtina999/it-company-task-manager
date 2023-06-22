@@ -32,6 +32,20 @@ class Worker(AbstractUser):
         return f"{self.last_name} {self.first_name}"
 
 
+class Project(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    deadline = models.DateField(null=True, blank=True)
+    is_completed = models.BooleanField(default=False)
+    assignees = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="projects"
+    )
+
+    def __str__(self):
+        return self.name
+
+
 class Task(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -56,6 +70,11 @@ class Task(models.Model):
     assignees = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="assignees"
+    )
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name="tasks"
     )
 
     class Meta:

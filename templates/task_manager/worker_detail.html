@@ -10,34 +10,25 @@
     - {{ worker.position }}</p>
   <p>Now: {% now "Y-m-d H:i:s" %}</p>
   <div>
-    <h2>Tasks:</h2>
-    {% if worker.assignees %}
-      <table class="table">
-        <tr>
-          <th>Task Type</th>
-          <th>Task</th>
-          <th>Deadline</th>
-          <th>Is completed</th>
-          <th>Priority</th>
-          <th>UPDATE</th>
-          <th>DELETE</th>
-        </tr>
-        {% for task in worker.assignees.all %}
-          <tr>
-            <td>{{ task.task_type }}</td>
-            <td><a href="{% url 'task_manager:task-detail' pk=task.id %}">{{ task.name }}</a></td>
-            <td>{{ task.deadline }}</td>
-            <td>{{ task.is_completed }}</td>
-            <td>{{ task.priority }}</td>
-            <td>
-              <a href="{% url 'task_manager:task-update' pk=task.id %}">UPDATE</a>
-            </td>
-            <td>
-              <a href="{% url 'task_manager:task-delete' pk=task.id %}">DELETE</a>
-            </td>
-          </tr>
+    <p>MY PROJECTS:</p>
+    {% if worker.projects %}
+      {% for project in worker.projects.all %}
+        <h3>PROJECT: {{ project.name }}</h3>
+        <p>MY TASK: </p>
+        {% for task in project.tasks.all %}
+
+          {% if worker in task.assignees.all %}
+            <div>
+              <p>Task name: {{ task.name }}, Task type: {{ task.task_type }}
+                <span><a href="{% url 'task_manager:task-detail' project_id=project.id pk=task.id %}">
+                  Task detail</a></span>
+              </p>
+            </div>
+
+          {% endif %}
         {% endfor %}
-      </table>
+        <br>
+      {% endfor %}
     {% else %}
       <p> No task </p>
     {% endif %}
