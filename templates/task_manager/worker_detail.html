@@ -3,35 +3,92 @@
   <h1>
     My profile ({{ worker.username }})
     <span>
-          <a href="{% url "task_manager:worker-accounts-update" pk=worker.id %}">UPDATE</a>
+      <a href="{% url 'task_manager:worker-accounts-update' pk=worker.id %}">UPDATE</a>
     </span>
   </h1>
-  <p>{{ worker.last_name }} {{ worker.first_name }}
-    - {{ worker.position }}</p>
+  <p>{{ worker.last_name }} {{ worker.first_name }} - {{ worker.position }}</p>
   <p>Now: {% now "Y-m-d H:i:s" %}</p>
   <div>
     <p>MY PROJECTS:</p>
-    {% if worker.projects %}
+    <p>Filter tasks:</p>
+    <form method="GET">
+      <input type="hidden" name="project_id" value="{{ project.id }}">
+      <label for="filter_completed">Completed:</label>
+      <select name="is_completed" id="filter_completed">
+        <option value="all" {% if request.GET.is_completed == 'all' or not request.GET.is_completed %}selected{% endif %}>All</option>
+        <option value="true" {% if request.GET.is_completed == 'true' %}selected{% endif %}>True</option>
+        <option value="false" {% if request.GET.is_completed == 'false' %}selected{% endif %}>False</option>
+      </select>
+      <button class="btn btn-primary" type="submit">Apply</button>
+    </form>
+    {% if worker.projects.all %}
       {% for project in worker.projects.all %}
         <h3>PROJECT: {{ project.name }}</h3>
-        <p>MY TASK: </p>
-        {% for task in project.tasks.all %}
-
-          {% if worker in task.assignees.all %}
-            <div>
-              <p>Task name: {{ task.name }}, Task type: {{ task.task_type }}
-                <span><a href="{% url 'task_manager:task-detail' project_id=project.id pk=task.id %}">
-                  Task detail</a></span>
-              </p>
-            </div>
-
+        {% with project_tasks=project.tasks.all %}
+          {% if project_tasks %}
+            <p>MY TASK:</p>
+            <table class="table">
+              <tr>
+                <th>TASK</th>
+                <th>TYPE TASK</th>
+                <th>IS COMPLETED</th>
+              </tr>
+              {% for task in project_tasks %}
+                {% if worker in task.assignees.all %}
+                  {% if request.GET.is_completed == 'all' or not request.GET.is_completed %}
+                    <tr>
+                      <td>
+                        <a href="{% url 'task_manager:task-detail' project_id=project.id pk=task.id %}">
+                          {{ task.name }}
+                        </a>
+                      </td>
+                      <td>
+                        {{ task.task_type }}
+                      </td>
+                      <td>
+                        {{ task.is_completed }}
+                      </td>
+                    </tr>
+                  {% elif request.GET.is_completed == 'true' and task.is_completed %}
+                    <tr>
+                      <td>
+                        <a href="{% url 'task_manager:task-detail' project_id=project.id pk=task.id %}">
+                          {{ task.name }}
+                        </a>
+                      </td>
+                      <td>
+                        {{ task.task_type }}
+                      </td>
+                      <td>
+                        {{ task.is_completed }}
+                      </td>
+                    </tr>
+                  {% elif request.GET.is_completed == 'false' and not task.is_completed %}
+                    <tr>
+                      <td>
+                        <a href="{% url 'task_manager:task-detail' project_id=project.id pk=task.id %}">
+                          {{ task.name }}
+                        </a>
+                      </td>
+                      <td>
+                        {{ task.task_type }}
+                      </td>
+                      <td>
+                        {{ task.is_completed }}
+                      </td>
+                    </tr>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </table>
+          {% else %}
+            <p>No task</p>
           {% endif %}
-        {% endfor %}
+        {% endwith %}
         <br>
       {% endfor %}
     {% else %}
-      <p> No task </p>
+      <p>No task</p>
     {% endif %}
   </div>
-
 {% endblock %}

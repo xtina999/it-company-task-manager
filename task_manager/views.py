@@ -42,6 +42,24 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
     queryset = Worker.objects.prefetch_related("position")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        worker = self.object
+        project_id = self.request.GET.get("project_id")
+        is_completed = self.request.GET.get("is_completed")
+
+        tasks = Task.objects.filter(assignees=worker)
+
+        if project_id:
+            tasks = tasks.filter(project_id=project_id)
+
+        if is_completed is not None:
+            is_completed = True if is_completed.lower() == "true" else False
+            tasks = tasks.filter(is_completed=is_completed)
+
+        context["tasks"] = tasks
+        return context
+
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
     model = Worker
