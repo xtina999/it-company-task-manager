@@ -3,33 +3,57 @@
 {% block content %}
   <h1>
     Task type list
-    <a href="{% url 'task_manager:task-types-create' %}">
-      +
-    </a>
+    <a href="{% url 'task_manager:task-types-create' %}"
+      type="submit"
+         class="btn btn-success"
+        style="height: 40px">ADD TASK TYPE
+      </a>
   </h1>
-  {% if tasktype_list %}
-    <table class="table">
-      <tr>
-        <th>Name</th>
-        <th>Update</th>
-        <th>Delete</th>
-      </tr>
-      {% for task_type in tasktype_list %}
-        <tr>
-          <td>
-            {{ task_type.name }}
-          </td>
-          <td>
-            <a href="{% url "task_manager:task-types-update" pk=task_type.id %}">UPDATE</a>
-          </td>
-          <td>
-            <a href="{% url "task_manager:task-types-delete" pk=task_type.id %}">DELETE</a>
-          </td>
-        </tr>
-    {% endfor %}
-    </table>
-  {% else %}
-    <p>The are no task type in company</p>
-  {% endif %}
+  <div class="col-12 col-lg-12">
+    <div class="card card-table">
+       <div class="card-header">
+           <div class="tools dropdown"> <span class="icon mdi mdi-download"></span><a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"><span class="icon mdi mdi-more-vert"></span></a>
+             <div class="dropdown-menu" role="menu"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a>
+               <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Separated link</a>
+               </div>
+             </div>
+         <div class="title">Purchases</div>
+       </div>
+          <div class="card-body table-responsive">
+              {% if tasktype_list %}
+                <table  class="table table-striped table-borderless">
+                  <thead>
+                    <tr>
+                      <th style="width:40%;">Name</th>
+
+                      <th style="width:15%; padding-left: 40px">UPDATE</th>
+                      <th style="width:15%; padding-left: 40px">DELETE</th>
+                    </tr>
+                  </thead>
+                  {% for task_type in tasktype_list %}
+                    <tbody class="no-border-x">
+                      <tr>
+                        <td>{{ task_type.name }}
+                        </td>
+                        <td>
+                          <a type="button" class="btn btn-warning" href="{% url "task_manager:task-types-update" pk=task_type.id %}">UPDATE</a>
+                          </td>
+                          <td>
+                          <a type="button" class="btn btn-danger" href="{% url "task_manager:task-types-delete" pk=task_type.id %}">DELETE</a>
+                          </td>
+                      </tr>
+                    </tbody>
+                  {% endfor %}
+                </table>
+          </div>
+       </div>
+    </div>
+    {% block pagination %}
+      {% include "includes/pagination.html" %}
+    {% endblock %}
+
+    {% else %}
+      <p>The are no task type in company</p>
+    {% endif %}
 
 {% endblock %}

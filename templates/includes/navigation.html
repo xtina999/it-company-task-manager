@@ -1,0 +1,75 @@
+{% load static %}
+
+<nav class="navbar navbar-top navbar-expand navbar-dashboard navbar-dark ps-0 pe-2 pb-0">
+  <div class="container-fluid px-0">
+    <div class="d-flex justify-content-between w-100" id="navbarSupportedContent">
+      <div class="d-flex align-items-center">
+
+        <!-- / Search form -->
+      </div>
+      <!-- Navbar links -->
+      <ul class="navbar-nav align-items-center">
+        <li>
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar4" viewBox="0 0 16 16">
+              <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/>
+            </svg>
+          </span>  Now: {% now "Y-m-d H:i:s" %}</li>
+        <li class="nav-item dropdown ms-lg-3">
+        {% if user.is_authenticated %}
+
+          <a class="nav-link dropdown-toggle pt-1 px-0" href="{% url 'task_manager:worker-detail' pk=user.id %}" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <div class="media d-flex align-items-center">
+              <img class="avatar rounded-circle" alt="Image placeholder"
+                src="{% static 'assets/img/team/userlogout.png' %}">
+              <div class="media-body ms-2 text-dark align-items-center d-none d-lg-block">
+                <span class="mb-0 font-small fw-bold text-gray-900">{{ user.get_username }}</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="dropdown-menu dashboard-dropdown dropdown-menu-end mt-2 py-1">
+            <a class="dropdown-item d-flex align-items-center" href="{% url 'task_manager:worker-detail' pk=user.id %}">
+              <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              My Profile
+            </a>
+            <a class="dropdown-item d-flex align-items-center" href="{% url 'task_manager:worker-accounts-update' pk=user.id %}">
+              <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                  d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              Settings
+            </a>
+
+              {% if request.user.is_authenticated %}
+              <div role="separator" class="dropdown-divider my-1"></div>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout'%}?next={% url 'task_manager:index' %}">
+                <svg class="dropdown-icon text-danger me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                  </path>
+                </svg>
+                Logout
+              </a>
+              {% endif %}
+          </div>
+        </li>
+      {% else %}
+        <a class="nav-link dropdown-toggle pt-1 px-0" style="color:darkgreen; font-size: 25px " href="{% url 'login' %}?next={{request.path}}"
+          ><img class="avatar rounded-circle" alt="Image placeholder"
+                src="{% static 'assets/img/team/user_login.png' %}">Login
+        </a>
+      {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
