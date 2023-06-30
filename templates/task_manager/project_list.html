@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    Project List
+    {% if request.user.position.name == "Project Manager" %}
+      <a href="{% url 'task_manager:project-create' %}"
+        type="submit"
+         class="btn btn-success"
+        style="height: 40px">ADD PROJECT
+      </a>
+    {% endif %}
+  </h1>
+  <div>
+    <h4>Filter</h4>
+    <h6>Is Completed</h6>
+    <form method="GET" class="d-flex align-items-center" style="width: 600px; margin-right: 40px">
+      <div class="form-group">
+        <select name="is_completed" id="is_completed" class="form-control">
+          <option value="">All</option>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+
+      <button type="submit" style="margin-left: 20px" class="btn btn-primary"> Apply Filter</button>
+    </form>
+  </div>
+
+  <br>
+  <form action="" method="get" class="d-flex align-items-center">
+    {{ search_form|crispy }}
+    <input class="btn btn-secondary" type="submit" value="🔎">
+  </form>
+  <div class="col-12 col-lg-12">
+    <div class="card card-table">
+       <div class="card-header">
+           <div class="tools dropdown"> <span class="icon mdi mdi-download"></span><a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"><span class="icon mdi mdi-more-vert"></span></a>
+             <div class="dropdown-menu" role="menu"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a>
+               <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Separated link</a>
+               </div>
+             </div>
+         <div class="title">Purchases</div>
+       </div>
+          <div class="card-body table-responsive">
+              {% if project_list %}
+                <table  class="table table-striped table-borderless">
+                  <thead>
+                    <tr>
+                      <th style="width:40%;">Project</th>
+                      <th class="width:15%;">Deadline</th>
+                      <th style="width:15%;">Is completed</th>
+                      <th style="width:15%; padding-left: 40px">UPDATE</th>
+                      <th style="width:15%; padding-left: 40px">DELETE</th>
+                    </tr>
+                  </thead>
+                  {% for project in project_list %}
+                    <tbody class="no-border-x">
+                      <tr>
+                        <td><a
+                            href="{% url 'task_manager:project-detail' project_id=project.id %}">
+                            <span>click: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16">
+                              <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
+                              </svg>
+                            </span>{{ project.name }}
+                          </a>
+                        </td>
+                        <td >{{ project.deadline }}</td>
+                        {% if project.is_completed is True %}
+                          <td class="text-success">{{ project.is_completed }}</td>
+                        {% else %}
+                          <td class="text-danger">{{ project.is_completed }}</td>
+                        {% endif %}
+                        <td>
+                          <a type="button" class="btn btn-warning"
+                            href="{% url 'task_manager:project-update' project_id=project.id %}">
+                            UPDATE
+                          </a>
+                        </td>
+                        <td>
+                          <a type="button" class="btn btn-danger"
+                            href="{% url 'task_manager:project-delete' project_id=project.id %}">
+                            DELETE
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  {% endfor %}
+                </table>
+          </div>
+       </div>
+
+    </div>
+        {% block pagination %}
+            {% include "includes/pagination.html" %}
+          {% endblock %}
+
+          {% else %}
+            <p> The are no project in company </p>
+          {% endif %}
+
+{% endblock %}

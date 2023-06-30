@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include 'includes/head.html' %}
+  {% block extrastyle %}{% endblock extrastyle %}
+  {% block extrahead %}{% endblock extrahead %}
+</head>
+  {% block nav %}
+    {% include 'includes/nav.html' %}
+  {% endblock nav %}
+
+<body>
+{% block title %}
+  <title>Lumovex</title>
+{% endblock %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2">
+
+            {% block sidebar %}
+                {% include 'includes/sidebar.html' %}
+            {% endblock %}
+
+        </div>
+
+    </div>
+</div>
+  <main class="content">
+    {% block header %}
+      {% include 'includes/navigation.html' %}
+    {% endblock header %}
+
+    {% block content %}{% endblock %}
+
+
+
+    {% block footer %}
+      {% include 'includes/footer.html' %}
+    {% endblock footer %}
+
+  </main>
+
+
+{% include 'includes/scripts.html' %}
+
+</body>
+</html>

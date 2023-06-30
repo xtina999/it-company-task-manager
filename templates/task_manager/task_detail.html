@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div>
+    <section class="section section-lg bg-white py-5" id="pricing">
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col-12 col-lg-4" style="margin-left: 80px">
+            <p><a href="{% url 'task_manager:task-update' project_id=task.project.id pk=task.id %}?next={{request.path}}"
+              type="submit"
+              class="btn btn-warning">UPDATE
+            </a>
+            <a href="{% url 'task_manager:task-delete' project_id=task.project.id pk=task.id %}"
+              type="submit"
+              class="btn btn-danger">DELETE
+            </a></p>
+            <h2>
+              Task: {{ task.name }} <span>
+              </span>
+            </h2>
+            <p style="color: #0a6f4d">
+              created at: {{ task.created_at }}
+            </p>
+            <p>deadline: {{ task.deadline }}</p>
+            <p>
+              is completed: {{ task.is_completed }}, priority: {{ task.priority }}
+            </p>
+          </div>
+          <div class="col-12 col-lg-4 " style="margin-right: 80px">
+            {% if task.assignees %}
+               <br>
+                <p style="color: #0a53be">
+                  Team: {{ task.assignees.count }} assignee{{ task.assignees.count|pluralize }}
+                </p>
+                {% for worker in task.assignees.all %}
+                    <p>
+                      {{ worker.position }} - {{ worker.last_name }} {{ worker.first_name }}
+                    </p>
+                {% endfor %}
+            {% else %}
+              <p>No team</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+  <div>
+    <div class="py-6 container">
+      <h5 class="text-uppercase text-primary letter-spacing-3 mb-3">
+        Task: {{ task.name }}
+      </h5>
+      <p class="lead text-muted mb-4">
+        {{ task.description }}
+      </p>
+    </div>
+  </div>
+  </div>
+{% endblock %}
