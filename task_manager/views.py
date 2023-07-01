@@ -54,7 +54,7 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
             tasks = tasks.filter(project_id=project_id)
 
         if is_completed is not None:
-            is_completed = True if is_completed.lower() == "true" else False
+            is_completed = is_completed.lower() == "true"
             tasks = tasks.filter(is_completed=is_completed)
 
         context["tasks"] = tasks
@@ -215,7 +215,7 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
         form = ProjectSearchForm(self.request.GET)
 
         if is_completed:
-            is_completed = True if is_completed == "true" else False
+            is_completed = is_completed.lower() == "true"
             queryset = queryset.filter(is_completed=is_completed)
         if form.is_valid():
             queryset = queryset.filter(name__icontains=form.cleaned_data["name"])
@@ -257,7 +257,7 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
 
         is_completed = self.request.GET.get("is_completed")
         if is_completed is not None:
-            is_completed = True if is_completed == "true" else False
+            is_completed = is_completed.lower() == "true"
             tasks = tasks.filter(is_completed=is_completed)
         return tasks.distinct()
 
