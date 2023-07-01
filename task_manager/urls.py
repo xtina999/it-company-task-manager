@@ -45,17 +45,17 @@ urlpatterns = [
         name="worker-create"
     ),
     path(
-        "workers/<int:pk>/update",
+        "workers/<int:pk>/update/",
         WorkerUpdateView.as_view(),
         name="worker-update"
     ),
     path(
-        "workers/accounts/<int:pk>/update",
+        "workers/accounts/<int:pk>/update/",
         WorkerAccountsUpdateView.as_view(),
         name="worker-accounts-update"
     ),
     path(
-        "workers/<int:pk>/delete",
+        "workers/<int:pk>/delete/",
         WorkerDeleteView.as_view(),
         name="worker-delete"
     ),
@@ -70,12 +70,12 @@ urlpatterns = [
         name="positions-create"
     ),
     path(
-        "positions/<int:pk>/update",
+        "positions/<int:pk>/update/",
         PositionUpdateView.as_view(),
         name="positions-update"
     ),
     path(
-        "positions/<int:pk>/delete",
+        "positions/<int:pk>/delete/",
         PositionDeleteView.as_view(),
         name="positions-delete"
     ),
@@ -90,12 +90,12 @@ urlpatterns = [
         name="task-types-create"
     ),
     path(
-        "task-types/<int:pk>/update",
+        "task-types/<int:pk>/update/",
         TaskTypeUpdateView.as_view(),
         name="task-types-update"
     ),
     path(
-        "task-types/<int:pk>/delete",
+        "task-types/<int:pk>/delete/",
         TaskTypeDeleteView.as_view(),
         name="task-types-delete"
     ),
@@ -120,7 +120,7 @@ urlpatterns = [
         name="task-update"),
 
     path(
-        "projects/<int:project_id>/tasks/<int:pk>/delete",
+        "projects/<int:project_id>/tasks/<int:pk>/delete/",
         TaskDeleteView.as_view(),
         name="task-delete"
     ),
@@ -140,12 +140,12 @@ urlpatterns = [
         name="project-create"
     ),
     path(
-        "projects/<int:project_id>/update",
+        "projects/<int:project_id>/update/",
         ProjectUpdateView.as_view(),
         name="project-update"
     ),
     path(
-        "projects/<int:project_id>/delete",
+        "projects/<int:project_id>/delete/",
         ProjectDeleteView.as_view(),
         name="project-delete"
     ),
