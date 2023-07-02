@@ -21,7 +21,7 @@ Key elements and their relationships within the Lumovex IT Company Task Manager:
 
 
 ##### DB structure
-![db_structure](db_structure.png)
+![db_structure](img/db_structure.png)
 
 
 ### Getting Started:
