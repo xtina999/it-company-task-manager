@@ -5,7 +5,7 @@
 
 ### Check it out!
 
-[IT Company task manager deployed to Heroku](LINK)
+[IT Company task manager deployed to Render](https://it-company-task-manager-btlb.onrender.com/#top)
 
 ### Installation
 To start using the Lumovex IT Company Task Manager, follow these steps:
