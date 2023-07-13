@@ -53,7 +53,6 @@ Key elements and their relationships within the Lumovex IT Company Task Manager:
 * The company's main homepage is accessible to all users.
 * The rest of the functionality is accessible only to authorized employees of the company.
 * Upon authorization, employees are directed to their personal page displaying their projects and tasks.
-* 
 
 ### Data Editing:
 
