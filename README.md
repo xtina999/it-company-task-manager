@@ -7,6 +7,12 @@
 
 [IT Company task manager deployed to Render](https://it-company-task-manager-btlb.onrender.com/#top)
 
+TEST USER:
+
+login: sjohnson
+
+password: 89fDmvmvJmcZNuj
+
 ### Installation
 To start using the Lumovex IT Company Task Manager, follow these steps:
 
